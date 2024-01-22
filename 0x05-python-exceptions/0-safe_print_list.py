@@ -4,6 +4,6 @@ def safe_print_list(my_list=[], x=0):
         for value in my_list[:x]:
             print(value, end='')
     except IndexError:
-        print("\nThis is index does not exist")
+        break
     print()
     return len(my_list[:x])
