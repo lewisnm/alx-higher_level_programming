@@ -11,7 +11,7 @@ class Square:
         """Initialization of the attribute
 
         Args
-        size(int):The Square's new size
+            size(int):The Square's new size
         """
         if not isinstance(size, int):
             raise TypeError("size must be an integer")
