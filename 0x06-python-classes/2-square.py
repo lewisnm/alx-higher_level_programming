@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""Further definition of the Square
-using the safe values
-"""
+"""Further definition of the Square using the safe values"""
 
 
 class Square:
