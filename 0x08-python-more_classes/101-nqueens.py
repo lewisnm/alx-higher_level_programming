@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-"""Solves the N-queens puzzle"""
-
+"""
+Solve the N-queens puzzle.
+"""
 import sys
 
 
@@ -12,14 +13,14 @@ def init_board(n):
     return (board)
 
 
-def board_deepcopy(board):
+def CopyChessBoard(board):
     """Return a deepcopy of a chessboard."""
     if isinstance(board, list):
-        return list(map(board_deepcopy, board))
+        return list(map(CopyChessBoard, board))
     return (board)
 
 
-def get_solution(board):
+def GetSolvedList(board):
     """Return the list of lists representation of a solved chessboard."""
     solution = []
     for r in range(len(board)):
@@ -30,14 +31,14 @@ def get_solution(board):
     return (solution)
 
 
-def xout(board, row, col):
-    """X out spots on a chessboard.
-
-    All spots where non-attacking queens can no
-    longer be played are X-ed out.
+def DeleteInvalidSquares(board, row, col):
+    """
+    print X's on chessboard spots where
+    non-attacking queens can no
+    longer be played.
 
     Args:
-        board (list): The current working chessboard.
+        board (list): The current chessboard.
         row (int): The row where a queen was last played.
         col (int): The column where a queen was last played.
     """
@@ -83,8 +84,9 @@ def xout(board, row, col):
         c -= 1
 
 
-def recursive_solve(board, row, queens, solutions):
-    """Recursively solve an N-queens puzzle.
+def SolvePuzzle(board, row, queens, solutions):
+    """
+    Recursively solve an N-queens puzzle.
 
     Args:
         board (list): The current working chessboard.
@@ -95,16 +97,15 @@ def recursive_solve(board, row, queens, solutions):
         solutions
     """
     if queens == len(board):
-        solutions.append(get_solution(board))
+        solutions.append(GetSolvedList(board))
         return (solutions)
 
     for c in range(len(board)):
         if board[row][c] == " ":
-            tmp_board = board_deepcopy(board)
+            tmp_board = CopyChessBoard(board)
             tmp_board[row][c] = "Q"
-            xout(tmp_board, row, c)
-            solutions = recursive_solve(tmp_board, row + 1,
-                                        queens + 1, solutions)
+            DeleteInvalidSquares(tmp_board, row, c)
+            solutions = SolvePuzzle(tmp_board, row + 1, queens + 1, solutions)
 
     return (solutions)
 
@@ -121,6 +122,6 @@ if __name__ == "__main__":
         sys.exit(1)
 
     board = init_board(int(sys.argv[1]))
-    solutions = recursive_solve(board, 0, 0, [])
+    solutions = SolvePuzzle(board, 0, 0, [])
     for sol in solutions:
         print(sol)
