@@ -1,27 +1,28 @@
 #!/usr/bin/python3
-"""
-Solve the N-queens puzzle.
+"""Program solves the N-queens puzzle.
+Determines all possible solutions to placing N
+N non-attacking queens on an NxN chessboard..
 """
 import sys
 
 
 def init_board(n):
-    """Initialize an `n`x`n` sized chessboard with 0's."""
+    """Initialize chessboard of n x n size with 0's."""
     board = []
     [board.append([]) for i in range(n)]
     [row.append(' ') for i in range(n) for row in board]
     return (board)
 
 
-def CopyChessBoard(board):
-    """Return a deepcopy of a chessboard."""
+def board_deepcopy(board):
+    """Return chessboard's deepcopy."""
     if isinstance(board, list):
-        return list(map(CopyChessBoard, board))
+        return list(map(board_deepcopy, board))
     return (board)
 
 
-def GetSolvedList(board):
-    """Return the list of lists representation of a solved chessboard."""
+def get_solution(board):
+    """Return representation solved chessboard's list of lists."""
     solution = []
     for r in range(len(board)):
         for c in range(len(board)):
@@ -31,16 +32,14 @@ def GetSolvedList(board):
     return (solution)
 
 
-def DeleteInvalidSquares(board, row, col):
-    """
-    print X's on chessboard spots where
-    non-attacking queens can no
-    longer be played.
-
+def xout(board, row, col):
+    """X out spots on a chessboard.
+    All spots where non-attacking queens can no
+    longer be played are X-ed out.
     Args:
-        board (list): The current chessboard.
-        row (int): The row where a queen was last played.
-        col (int): The column where a queen was last played.
+        board: The current working chessboard; in list form 
+        row: The row where a queen was last played; in int
+        col: The column where a queen was last played; in int
     """
     # X out all forward spots
     for c in range(col + 1, len(board)):
@@ -84,28 +83,27 @@ def DeleteInvalidSquares(board, row, col):
         c -= 1
 
 
-def SolvePuzzle(board, row, queens, solutions):
-    """
-    Recursively solve an N-queens puzzle.
-
+def recursive_solve(board, row, queens, solutions):
+    """Recursively solve an N-queens puzzle.
     Args:
-        board (list): The current working chessboard.
-        row (int): The current working row.
-        queens (int): The current number of placed queens.
-        solutions (list): A list of lists of solutions.
+        board: current working chessboard;list form
+        row: current working row; int
+        queens: current number; placed queens; int
+        solutions: list of lists for solutions; list
     Returns:
-        solutions
+        the solutions
     """
     if queens == len(board):
-        solutions.append(GetSolvedList(board))
+        solutions.append(get_solution(board))
         return (solutions)
 
     for c in range(len(board)):
         if board[row][c] == " ":
-            tmp_board = CopyChessBoard(board)
+            tmp_board = board_deepcopy(board)
             tmp_board[row][c] = "Q"
-            DeleteInvalidSquares(tmp_board, row, c)
-            solutions = SolvePuzzle(tmp_board, row + 1, queens + 1, solutions)
+            xout(tmp_board, row, c)
+            solutions = recursive_solve(tmp_board, row + 1,
+                                        queens + 1, solutions)
 
     return (solutions)
 
@@ -122,6 +120,6 @@ if __name__ == "__main__":
         sys.exit(1)
 
     board = init_board(int(sys.argv[1]))
-    solutions = SolvePuzzle(board, 0, 0, [])
+    solutions = recursive_solve(board, 0, 0, [])
     for sol in solutions:
         print(sol)
