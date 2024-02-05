@@ -1,14 +1,11 @@
 #!/usr/bin/python3
-"""MyList
-"""
+""" Program that sort a list int """
 
 
 class MyList(list):
-    """Contains list
-    """
-
+    """ class that inherist from list """
     def print_sorted(self):
-        """Prints self in sorted format
-        """
-
-        print(sorted(self))
+        """ prints the list, but sorted (ascending sort) """
+        new_list = self[:]
+        new_list.sort()
+        print(new_list)
