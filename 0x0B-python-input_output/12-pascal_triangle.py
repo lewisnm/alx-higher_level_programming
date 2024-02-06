@@ -1,31 +1,41 @@
 #!/usr/bin/python3
-"""pascal_triangle
+""" Function that returns the pascal triangle
+
+    Args:
+        n: number of lines
+
+    Returns:
+        matrix: a matrix with the pascal triangle
+
 """
 
 
 def pascal_triangle(n):
-    """ends of each list in the matrix are summed to display the next list
-    until the middle of the list. The number '1' is always at both ends.
-    """
-    if n <= 0:
-        return []
+    """ Function that returns the pascal triangle
 
-    res = []
-    for elem in range(n):
-        if elem == 0:
-            res.append([1])
-            continue
-        if elem == 1:
-            res.append([1, 1])
-            continue
-        row = []
-        # init row
-        for item in range(elem + 1):
-            row.append(item)
-        for item in range(1, elem):
-            row[0] = 1
-            row[elem] = 1
-            row[item] = res[elem - 1][item] + res[elem - 1][item - 1]
-        res.append(row)
-            
-    return res
+    Args:
+        n: number of lines
+
+    Returns:
+        matrix: a matrix with the pascal triangle
+
+    """
+
+    matrix = []
+    prev = []
+
+    for i in range(n):
+        res_list = []
+        p1 = -1
+        p2 = 0
+        for j in range(len(prev) + 1):
+            if p1 == -1 or p2 == len(prev):
+                res_list += [1]
+            else:
+                res_list += [prev[p1] + prev[p2]]
+            p1 += 1
+            p2 += 1
+        matrix.append(res_list)
+        prev = res_list[:]
+
+    return matrix
