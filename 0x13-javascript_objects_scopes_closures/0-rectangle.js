@@ -1,2 +1,4 @@
 #!/bin/bash/node
-class Rectangle {}
+module.exports = class Rectangle {
+	//methods go here
+}
